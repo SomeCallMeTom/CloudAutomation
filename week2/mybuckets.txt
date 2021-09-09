@@ -1,0 +1,5 @@
+Bucket: week2-demo-bucket-tdarlington
+    ! Bucket does not have content !
+Bucket: week2-demo-tdarlington-ex2
+    error.html
+    index.html
