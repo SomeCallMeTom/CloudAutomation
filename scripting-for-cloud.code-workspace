@@ -1,10 +1,10 @@
 {
 	"folders": [
 		{
-			"path": "week2"
+			"path": "../../.aws"
 		},
 		{
-			"path": "../../.aws"
+			"path": "."
 		}
 	],
 	"settings": {}
