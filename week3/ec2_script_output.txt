@@ -1,0 +1,7 @@
+i-0c49a152d263ea2e1
+pending
+running
+18.208.250.237
+no tags found
+Name = Thomas
+terminated
