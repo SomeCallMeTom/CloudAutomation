@@ -1,42 +1,43 @@
 from os import write
-import re
-import boto3, csv
-import json
-import datetime
-
-def defaultconverter(o):
-    if isinstance(o, datetime.datetime):
-        return o.__str__()
-
-def to_json(self):
-    return json.loads(json.dumps(self, default=defaultconverter, indent=4))
-
-def pretty_print(o):
-    print(to_json(o))
+from warnings import filters
+import boto3
+import csv
 
 
-def Get_Instances():
+def Get_Instances(filter_name, value):
     ec2_client = boto3.client('ec2')
-    response = ec2_client.describe_instances()
+    #response = ec2_client.describe_instances()
+    paginator = ec2_client.get_paginator('describe_instances')
+    pages = paginator.paginate(
+        Filters=[
+            {
+                'Name': filter_name,
+                'Values': [value]
+            },
+        ]
+    )
     # pretty_print(response['Reservations'][0]['Instances'])
     instances = []
-    for reservation in response['Reservations']:
-        for instance in reservation['Instances']:
-            instances.append(instance)
-    #print(instances)
+    for page in pages:
+        for reservation in page['Reservations']:
+            for instance in reservation['Instances']:
+                instances.append(instance)
+                # print(instance)
     return instances
 
-def CSV_Writer(header,content):
-    hFile = open('export.csv','w')
-    writer = csv.DictWriter(hFile,fieldnames=header)
+
+def CSV_Writer(header, content):
+    hFile = open('export.csv', 'w')
+    writer = csv.DictWriter(hFile, fieldnames=header)
     writer.writeheader
     for line in content:
         writer.writerow(line)
     hFile.close()
 
+
 def main():
-    instances = Get_Instances()
-    header = ['InstanceId','InstanceType','State','PublicIpAddress']
+    instances = Get_Instances('instance-state-name', 'running')
+    header = ['InstanceId', 'InstanceType', 'State', 'PublicIpAddress']
     content = []
     for instance in instances:
         print(f"Adding instance {instance['InstanceId']}")
@@ -45,10 +46,11 @@ def main():
                 "InstanceId": instance['InstanceId'],
                 "InstanceType": instance['InstanceType'],
                 "State": instance['State']['Name'],
-                "PublicIpAddress": instance['PublicIpAddress']
+                "PublicIpAddress": instance.get('PublicIpAddress', "N/A")
             }
         )
-    CSV_Writer(header,content)
+    CSV_Writer(header, content)
+
 
 if __name__ == "__main__":
     main()
