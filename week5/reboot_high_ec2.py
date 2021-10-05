@@ -17,24 +17,24 @@ instance_id = ec2.Create_EC2(image_id, ec2_client)
 print(f"Instance Id: {instance_id}")
 cw_client = boto3.client("cloudwatch")
 
-sns_topic = sns.CreateSNSTopic("low-cpu-notification")
+sns_topic = sns.CreateSNSTopic("high-cpu-notification")
 response = sns.SubscribeEmail(sns_topic, "tdarlington@madisoncollege.edu")
 
 response = cw_client.put_metric_alarm(
-    AlarmName='Web_Server_LOW_CPU_Utilization',
-    ComparisonOperator='LessThanOrEqualToThreshold',
-    EvaluationPeriods=1,
+    AlarmName='Web_Server_HIGH_CPU_Utilization',
+    ComparisonOperator='GreaterThanOrEqualToThreshold',
+    EvaluationPeriods=2,
     MetricName='CPUUtilization',
     Namespace='AWS/EC2',
     Period=300,
     Statistic='Average',
-    Threshold=10.0,
+    Threshold=75.0,
     ActionsEnabled=True,
     AlarmActions=[
-        f'arn:aws:swf:us-east-1:{account_id}:action/actions/AWS_EC2.InstanceId.Stop/1.0',
-        f'arn:aws:sns:us-east-1:{account_id}:low-cpu-notification'
+        f'arn:aws:swf:us-east-1:{account_id}:action/actions/AWS_EC2.InstanceId.Reboot/1.0',
+        f'arn:aws:sns:us-east-1:{account_id}:high-cpu-notification'
     ],
-    AlarmDescription='Alarm when server CPU is lower than 10%',
+    AlarmDescription='Alarm when server CPU is higher than 70%',
     Dimensions=[
         {
             'Name': 'InstanceId',
