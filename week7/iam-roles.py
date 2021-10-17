@@ -4,7 +4,7 @@ import boto3
 
 
 def Print_Recent_IAM_Policies():
-    recent_polices = []
+    iam_client = boto3.client('iam')
     response = iam_client.list_policies()
     # print(response)
     for policy in response['Policies']:
@@ -15,5 +15,4 @@ def Print_Recent_IAM_Policies():
 
 
 if __name__ == '__main__':
-    iam_client = boto3.client('iam')
-    policies = Print_Recent_IAM_Policies()
+    Print_Recent_IAM_Policies()
