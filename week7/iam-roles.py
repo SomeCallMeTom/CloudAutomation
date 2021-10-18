@@ -3,7 +3,7 @@ import pytz
 import boto3
 
 
-def Print_Recent_IAM_Policies():
+def Get_Recent_IAM_Policies():
     iam_client = boto3.client('iam')
     response = iam_client.list_policies()
     # print(response)
@@ -15,4 +15,4 @@ def Print_Recent_IAM_Policies():
 
 
 if __name__ == '__main__':
-    Print_Recent_IAM_Policies()
+    Get_Recent_IAM_Policies()
