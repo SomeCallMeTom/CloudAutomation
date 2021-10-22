@@ -1,0 +1,14 @@
+I would be creating a 'lambda' client and using the create_function method
+
+https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/lambda.html?highlight=python#Lambda.Client.create_function
+
+The following are required to run create_function
+- FunctionName
+- Role
+- Code
+
+Of all of those, the Code seems to be the most complex argument to generate
+I am believing that it would easiest to upload code to a s3 bucket, but i would need to research more
+
+The function isn't much use without a trigger wich i can create using 
+create_event_source_mapping

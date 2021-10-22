@@ -1,0 +1,7 @@
+There's a ton that could be 'monitored', and be used to trigger create_event_source_mapping
+
+One that comes to mind is if someone is trying to upload a particularly large file, that may be something that could be a threat.
+From a security point of view you may want a notification if access to the bucket is updated, and to recieve information about the new users that have access.
+
+You might want to implement "scanning" where the files that have not been accessed in some ammount of days are moved into "cold storage"
+You could have a regular script to backup S3 data to a local storage for redundancy.
