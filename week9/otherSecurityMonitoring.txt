@@ -1,0 +1,5 @@
+1. logging all behaviour performed against the "root" account
+2. notification of a new member joining a role with significant privledges
+3. notification if a role is granted additional permission
+
+I would use the iam client, with the get_account_summary() function, checking for the value of AccountMFAEnabled
