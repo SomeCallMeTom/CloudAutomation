@@ -1,0 +1,4 @@
+1. Web Apps (azure-mgmt-web)
+2. az webapp create
+3. azure-identity, azure-keyvault-secrets
+4. retrieved_secret = client.get_secret(secretName)
